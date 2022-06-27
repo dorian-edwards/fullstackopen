@@ -1,0 +1,23 @@
+title new note spa
+
+note over browser:
+In the file spa.js, an event handler
+is registered to the form.
+
+When the user types and presses save
+a new note object is created, it is
+added to an array and the DOM is redrawn.
+The browser then sends a POST request to 
+/exampleapp/new_note_spa with the new
+note as the payload.
+end note
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+
+note over server:
+The server responds with
+a confirmation that the note was
+created.
+end note
+
+server-->browser: RESPONSE [{"message": "note created"}]

@@ -1,0 +1,21 @@
+title single page application
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa
+server-->browser: HTML - Code
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server-->browser: main.css
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+server-->browser: spa.js
+
+note over browser:
+Browser executes spa.js which
+triggers a request for JSON data
+end note
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server-->browser: [{content: "testy test", date: "2022-06-27T11:52:40.353z"},...]
+
+note over browser:
+Event handler registered in
+spa.js renders data to display
+end note

@@ -1,13 +1,19 @@
 const Header = (props) => <h1>Course: {props.course}</h1>
-const Content = (props) => (
+const Part = ({ part, exercises }) => (
   <p>
-    {props.part}: {props.exercises}
+    {part}: {exercises}
   </p>
 )
+const Content = ({ data }) => {
+  const list = data.map(({ part, exercises }) => {
+    return <Part part={part} exercises={exercises} />
+  })
+
+  return <>{list}</>
+}
 
 const Total = (props) => {
   const total = props.total.reduce((a, b) => a + b, 0)
-
   return <div>Number of exercises: {total}</div>
 }
 
@@ -20,12 +26,24 @@ const App = () => {
   const part3 = 'State of a component'
   const exercises3 = 14
 
+  const courseData = [
+    {
+      part: part1,
+      exercises: exercises1,
+    },
+    {
+      part: part2,
+      exercises: exercises2,
+    },
+    {
+      part: part3,
+      exercises: exercises3,
+    },
+  ]
   return (
     <div>
       <Header course={course} />
-      <Content part={part1} exercises={exercises1} />
-      <Content part={part2} exercises={exercises2} />
-      <Content part={part3} exercises={exercises3} />
+      <Content data={courseData} />
       <Total total={[exercises1, exercises2, exercises3]} />
     </div>
   )

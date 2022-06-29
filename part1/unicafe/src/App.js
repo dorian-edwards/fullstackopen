@@ -5,9 +5,10 @@ const Button = ({ text, onClick }) => {
 }
 
 const StaticsLine = ({ text, value }) => (
-  <p>
-    {text}: {value}
-  </p>
+  <>
+    <td>{text}</td>
+    <td>{value}</td>
+  </>
 )
 
 const Stats = ({ stats }) => {
@@ -17,6 +18,7 @@ const Stats = ({ stats }) => {
   }, 0)
 
   const avg = (stats.good * 1 + stats.bad * -1) / count
+  const positive = stats.good / count
 
   return (
     <>
@@ -24,19 +26,34 @@ const Stats = ({ stats }) => {
       {count === 0 ? (
         <p>No feedback given</p>
       ) : (
-        <>
-          <div>
-            <StaticsLine text='good' value={stats.good} />
-            <StaticsLine text='neutral' value={stats.neutral} />
-            <StaticsLine text='bad' value={stats.bad} />
-          </div>
-          <div>
-            <p>all: {count}</p>
-            <p>
-              average: {Number.isNaN(avg) ? 0 : Number(avg * 100).toFixed(2)}%
-            </p>
-          </div>
-        </>
+        <table>
+          <tbody>
+            <tr>
+              <StaticsLine text='good' value={stats.good} />
+            </tr>
+            <tr>
+              <StaticsLine text='neutral' value={stats.neutral} />
+            </tr>
+            <tr>
+              <StaticsLine text='bad' value={stats.bad} />
+            </tr>
+            <tr>
+              <td>all</td>
+              <td>{count}</td>
+            </tr>
+            <tr>
+              <td>average</td>
+              <td>{Number.isNaN(avg) ? 0 : Number(avg).toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td>positive</td>
+              <td>
+                {Number.isNaN(positive) ? 0 : Number(positive * 100).toFixed(2)}
+                %
+              </td>
+            </tr>
+          </tbody>
+        </table>
       )}
     </>
   )

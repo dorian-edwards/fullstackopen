@@ -4,6 +4,12 @@ const Button = ({ text, onClick }) => {
   return <button onClick={onClick}>{text}</button>
 }
 
+const StaticsLine = ({ text, value }) => (
+  <p>
+    {text}: {value}
+  </p>
+)
+
 const Stats = ({ stats }) => {
   const count = Object.entries(stats).reduce((sum, [cat, num]) => {
     sum += num
@@ -20,9 +26,9 @@ const Stats = ({ stats }) => {
       ) : (
         <>
           <div>
-            <p>good: {stats.good}</p>
-            <p>neutral: {stats.neutral}</p>
-            <p>bad: {stats.bad}</p>
+            <StaticsLine text='good' value={stats.good} />
+            <StaticsLine text='neutral' value={stats.neutral} />
+            <StaticsLine text='bad' value={stats.bad} />
           </div>
           <div>
             <p>all: {count}</p>

@@ -15,6 +15,7 @@ const Stats = ({ stats }) => {
 
   return (
     <>
+      <h2>statistics</h2>
       <div>
         <p>good: {stats.good}</p>
         <p>neutral: {stats.neutral}</p>
@@ -59,7 +60,6 @@ function App() {
       <Button onClick={handleGoodReview} text='good' />
       <Button onClick={handleNeutralReview} text='neutral' />
       <Button onClick={handleBadReview} text='bad' />
-      <h2>statistics</h2>
       <Stats stats={stats} />
     </div>
   )

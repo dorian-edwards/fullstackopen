@@ -5,17 +5,27 @@ const Button = ({ text, onClick }) => {
 }
 
 const Stats = ({ stats }) => {
-  const data = []
+  const count = Object.entries(stats).reduce((sum, [cat, num]) => {
+    sum += num
+    return sum
+  }, 0)
 
-  for (let key in stats) {
-    data.push(
-      <p key={key.length + 'n'}>
-        {key}: {stats[key]}
-      </p>
-    )
-  }
+  const avg = (stats.good * 1 + stats.bad * -1) / count
+  console.log(avg)
 
-  return <>{data}</>
+  return (
+    <>
+      <div>
+        <p>good: {stats.good}</p>
+        <p>neutral: {stats.neutral}</p>
+        <p>bad: {stats.bad}</p>
+      </div>
+      <div>
+        <p>all: {count}</p>
+        <p>average: {Number.isNaN(avg) ? 0 : Number(avg * 100).toFixed(2)}%</p>
+      </div>
+    </>
+  )
 }
 
 function App() {

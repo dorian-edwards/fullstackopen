@@ -13,6 +13,7 @@ const App = () => {
 
   const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState({})
+  const [top, setTop] = useState(null)
 
   const generateAnecdote = () => {
     setSelected(Math.floor(Math.random() * anecdotes.length))
@@ -24,16 +25,26 @@ const App = () => {
 
     newVotes[selected] = newVotes[selected] + 1
     setVotes(newVotes)
-  }
 
-  console.log(votes)
+    if (top === null) return setTop(selected)
+    if (newVotes[selected] >= newVotes[top]) return setTop(selected)
+  }
 
   return (
     <>
+      <h2>Anecdote of the day</h2>
       <div>{anecdotes[selected]}</div>
       <div>has {votes[selected] || 0} votes</div>
       <button onClick={castVote}>vote</button>
       <button onClick={generateAnecdote}>next anecdote</button>
+      <h2>Anecdote with the most votes</h2>
+      {top !== null && (
+        <>
+          {' '}
+          <div>{anecdotes[top]}</div>
+          <div>has {votes[top] || 0} votes</div>
+        </>
+      )}
     </>
   )
 }

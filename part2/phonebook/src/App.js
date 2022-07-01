@@ -1,12 +1,15 @@
 import { useState } from 'react'
 
 const App = () => {
-  const [persons, setPersons] = useState([{ name: 'Arto Hellas' }])
+  const [persons, setPersons] = useState([
+    { name: 'Arto Hellas', number: '123-456-7890' },
+  ])
   const [newName, setNewName] = useState('name')
+  const [newNumber, setNewNumber] = useState('000-000-0000')
 
-  const handleInput = (e) => {
-    setNewName(e.target.value)
-  }
+  const handleName = (e) => setNewName(e.target.value)
+
+  const handleNumber = (e) => setNewNumber(e.target.value)
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -16,9 +19,10 @@ const App = () => {
         return alert(`${newName} is already in the phone book`)
       }
     }
-    const newPerson = { name: newName }
+    const newPerson = { name: newName, number: newNumber }
     setPersons(persons.concat(newPerson))
     setNewName('')
+    setNewNumber('')
   }
 
   return (
@@ -26,7 +30,10 @@ const App = () => {
       <h2>Phonebook</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          name: <input value={newName} onChange={handleInput} />
+          name: <input value={newName} onChange={handleName} />
+        </div>
+        <div>
+          number: <input value={newNumber} onChange={handleNumber} />
         </div>
         <div>
           <button type='submit'>add</button>
@@ -34,7 +41,9 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       {persons.map((obj, i) => (
-        <div key={obj.name}>{obj.name}</div>
+        <div key={obj.name}>
+          {obj.name} {obj.number}
+        </div>
       ))}
     </div>
   )

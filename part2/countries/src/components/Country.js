@@ -8,7 +8,7 @@ const Country = ({ country }) => {
     const [lat, lon] = country.latlng
     axios
       .get(
-        `https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${lat}&lon=${lon}&appid=${process.env.REACT_APP_API_KEY}`
+        `https://api.openweathermap.org/data/2.5/weather?units=imperial&lat=${lat}&lon=${lon}&appid=${process.env.REACT_APP_API_KEY}`
       )
       .then(({ data }) => {
         setWeather({
@@ -18,7 +18,7 @@ const Country = ({ country }) => {
           wind: data.wind.speed,
         })
       })
-  }, [])
+  }, [country.latlng])
 
   return (
     <>
@@ -37,12 +37,12 @@ const Country = ({ country }) => {
       <h2>Weather in {country.capital}</h2>
       {weather ? (
         <>
-          <p>temperature {weather.temp} Celcius</p>
+          <p>temperature {weather.temp} Fahrenheit</p>
           <img
             src={weather.icon}
             alt={`icon representing ${weather.alt}`}
           ></img>
-          <p>wind {weather.wind} m/s</p>
+          <p>wind {weather.wind} mph</p>
         </>
       ) : (
         <div>loading ...</div>

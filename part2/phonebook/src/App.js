@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Data from './components/Data'
 import Filter from './components/Filter'
 import Form from './components/Form'
-import { getAll, create } from './services/phonebook'
+import { getAll, create, remove } from './services/phonebook'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -32,6 +32,13 @@ const App = () => {
     setNewNumber('')
   }
 
+  const deleteHandler = (entry) => {
+    window.confirm(`delete ${entry.name} ?`) &&
+      remove(entry.id).then((deletedPerson) => {
+        setPersons(persons.filter((p) => p.id !== entry.id))
+      })
+  }
+
   const handleFilter = (e) => setFilter(e.target.value)
 
   const eligibleEntries = filter
@@ -57,7 +64,7 @@ const App = () => {
         handleNumber={handleNumber}
         onSubmit={handleSubmit}
       />
-      <Data entries={eligibleEntries} />
+      <Data entries={eligibleEntries} deleteHandler={deleteHandler} />
     </div>
   )
 }

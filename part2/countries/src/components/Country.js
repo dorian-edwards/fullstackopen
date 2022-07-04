@@ -7,7 +7,7 @@ const Country = ({ country }) => (
     <strong>languages</strong>
     <ul>
       {Object.values(country.languages).map((language) => (
-        <li>{language}</li>
+        <li key={language}>{language}</li>
       ))}
     </ul>
     <img src={country.flags.png} alt={`flag of ${country.name.common}`}></img>

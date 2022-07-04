@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import Listings from './components/Listings'
+import Results from './components/Results'
 
 function App() {
   const [search, setSearch] = useState('')
@@ -9,6 +9,8 @@ function App() {
   const handleSearch = (e) => {
     setSearch(e.target.value)
   }
+
+  const clearSearch = (e) => setSearch(e)
 
   useEffect(() => {
     axios.get('https://restcountries.com/v3.1/all').then(({ data }) => {
@@ -26,7 +28,7 @@ function App() {
     <>
       <div>
         find countries <input value={search} onChange={handleSearch} />
-        {search && <Listings data={displayResults} />}
+        {search && <Results data={displayResults} clearSearch={clearSearch} />}
       </div>
     </>
   )

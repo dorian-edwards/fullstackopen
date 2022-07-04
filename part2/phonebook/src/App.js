@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import Data from './components/Data'
 import Filter from './components/Filter'
 import Form from './components/Form'
+import { getAll, create } from './services/phonebook'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -13,6 +13,7 @@ const App = () => {
 
   const handleName = (e) => setNewName(e.target.value)
   const handleNumber = (e) => setNewNumber(e.target.value)
+
   const handleSubmit = (e) => {
     e.preventDefault()
     for (let person of persons) {
@@ -22,7 +23,11 @@ const App = () => {
       }
     }
     const newPerson = { name: newName, number: newNumber }
-    setPersons(persons.concat(newPerson))
+
+    create(newPerson).then((returnedPerson) => {
+      setPersons(persons.concat(returnedPerson))
+    })
+
     setNewName('')
     setNewNumber('')
   }
@@ -36,8 +41,8 @@ const App = () => {
     : persons
 
   useEffect(() => {
-    axios.get('http://localhost:3001/persons').then((response) => {
-      setPersons(response.data)
+    getAll().then((initialEntries) => {
+      setPersons(initialEntries)
     })
   }, [])
 

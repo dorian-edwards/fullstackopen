@@ -2,43 +2,56 @@ import { useState, useEffect } from 'react'
 import Data from './components/Data'
 import Filter from './components/Filter'
 import Form from './components/Form'
-import { getAll, create, remove } from './services/phonebook'
+import { getAll, create, remove, update } from './services/phonebook'
 
 const App = () => {
+  // state
   const [persons, setPersons] = useState([])
-
   const [newName, setNewName] = useState('name')
-  const [newNumber, setNewNumber] = useState('000-000-0000')
+  const [newNumber, setNewNumber] = useState('123-456-7890')
   const [filter, setFilter] = useState('')
 
-  const handleName = (e) => setNewName(e.target.value)
-  const handleNumber = (e) => setNewNumber(e.target.value)
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    for (let person of persons) {
-      if (newName === person.name) {
-        setNewName('')
-        return alert(`${newName} is already in the phone book`)
-      }
-    }
-    const newPerson = { name: newName, number: newNumber }
-
-    create(newPerson).then((returnedPerson) => {
-      setPersons(persons.concat(returnedPerson))
-    })
-
+  // misc utility
+  const clear = () => {
     setNewName('')
     setNewNumber('')
   }
 
+  // handlers
+  const handleName = (e) => setNewName(e.target.value)
+  const handleNumber = (e) => setNewNumber(e.target.value)
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const person = persons.find(
+      (obj) => obj.name.toLowerCase() === newName.toLowerCase()
+    )
+
+    !person &&
+      create({ name: newName, number: newNumber }).then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson))
+        return clear()
+      })
+
+    const message = `${person.name} is already in the phonebook, replace old number with new one?`
+
+    window.confirm(message) &&
+      update(person.id, { ...person, number: newNumber }).then(
+        (returnedPerson) => {
+          setPersons(
+            persons.map((p) =>
+              p.id !== returnedPerson.id ? p : returnedPerson
+            )
+          )
+          return clear()
+        }
+      )
+  }
   const deleteHandler = (entry) => {
     window.confirm(`delete ${entry.name} ?`) &&
       remove(entry.id).then((deletedPerson) => {
         setPersons(persons.filter((p) => p.id !== entry.id))
       })
   }
-
   const handleFilter = (e) => setFilter(e.target.value)
 
   const eligibleEntries = filter

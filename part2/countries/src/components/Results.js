@@ -1,15 +1,7 @@
 import Country from './Country'
 import Listing from './Listing'
-import { useState } from 'react'
 
-const Results = ({ data, clearSearch }) => {
-  const [selected, setSelected] = useState(null)
-
-  const handleSelect = (e) => {
-    clearSearch(e.name.common)
-    setSelected(e)
-  }
-
+const Results = ({ data, selected, handleSelect }) => {
   if (selected) {
     return <Country country={selected} />
   }

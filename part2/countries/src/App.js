@@ -5,12 +5,17 @@ import Results from './components/Results'
 function App() {
   const [search, setSearch] = useState('')
   const [results, setResults] = useState([])
+  const [selected, setSelected] = useState(null)
 
   const handleSearch = (e) => {
+    if (selected) setSelected(null)
     setSearch(e.target.value)
   }
 
-  const clearSearch = (e) => setSearch(e)
+  const handleSelect = (e) => {
+    setSearch(e.name.common)
+    setSelected(e)
+  }
 
   useEffect(() => {
     axios.get('https://restcountries.com/v3.1/all').then(({ data }) => {
@@ -28,7 +33,13 @@ function App() {
     <>
       <div>
         find countries <input value={search} onChange={handleSearch} />
-        {search && <Results data={displayResults} clearSearch={clearSearch} />}
+        {search && (
+          <Results
+            data={displayResults}
+            selected={selected}
+            handleSelect={handleSelect}
+          />
+        )}
       </div>
     </>
   )

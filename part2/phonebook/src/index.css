@@ -4,7 +4,18 @@
 
 .success {
   border: 2px green solid;
+  border-radius: 5px;
   background: lightgray;
   color: darkgreen;
   padding: 15px 10px;
+  margin-bottom: 10px;
+}
+
+.error {
+  border: 2px red solid;
+  border-radius: 5px;
+  background: lightgray;
+  color: darkred;
+  padding: 15px 10px;
+  margin-bottom: 10px;
 }

@@ -11,7 +11,7 @@ const App = () => {
   const [newName, setNewName] = useState('name')
   const [newNumber, setNewNumber] = useState('123-456-7890')
   const [filter, setFilter] = useState('')
-  const [message, setMessage] = useState('')
+  const [popUp, setPopUp] = useState(null)
 
   // misc utility
   const clear = () => {
@@ -31,9 +31,12 @@ const App = () => {
     !person &&
       create({ name: newName, number: newNumber }).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson))
-        setMessage(`${returnedPerson.name} added successfully`)
+        setPopUp({
+          message: `${returnedPerson.name} added successfully`,
+          type: 'success',
+        })
         setTimeout(() => {
-          setMessage(null)
+          setPopUp(null)
         }, 5000)
         return clear()
       })
@@ -41,20 +44,28 @@ const App = () => {
     const message = `${person.name} is already in the phonebook, replace old number with new one?`
 
     window.confirm(message) &&
-      update(person.id, { ...person, number: newNumber }).then(
-        (returnedPerson) => {
+      update(person.id, { ...person, number: newNumber })
+        .then((returnedPerson) => {
           setPersons(
             persons.map((p) =>
               p.id !== returnedPerson.id ? p : returnedPerson
             )
           )
-          setMessage(
-            `${returnedPerson.name} number updated to ${returnedPerson.number}`
-          )
-          setTimeout(() => setMessage(null), 5000)
+          setPopUp({
+            message: `${returnedPerson.name} number updated to ${returnedPerson.number}`,
+            type: 'success',
+          })
+          setTimeout(() => setPopUp(null), 5000)
           return clear()
-        }
-      )
+        })
+        .catch((error) => {
+          setPopUp({
+            message: `Information of ${person.name} has already been removed from server`,
+            type: 'error',
+          })
+          setPersons(persons.filter((p) => p.id !== person.id))
+          setTimeout(() => setPopUp(null), 5000)
+        })
   }
   const deleteHandler = (entry) => {
     window.confirm(`delete ${entry.name} ?`) &&
@@ -79,7 +90,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      {message && <Notification message={message} type='success' />}
+      {popUp && <Notification message={popUp.message} type={popUp.type} />}
       <Filter filter={filter} onChange={handleFilter} />
       <Form
         newName={newName}

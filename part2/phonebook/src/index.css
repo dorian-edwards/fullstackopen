@@ -1,0 +1,10 @@
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.success {
+  border: 2px green solid;
+  background: lightgray;
+  color: darkgreen;
+  padding: 15px 10px;
+}

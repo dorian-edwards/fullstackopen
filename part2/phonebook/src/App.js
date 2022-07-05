@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Data from './components/Data'
 import Filter from './components/Filter'
 import Form from './components/Form'
+import Notification from './components/Notification'
 import { getAll, create, remove, update } from './services/phonebook'
 
 const App = () => {
@@ -10,6 +11,7 @@ const App = () => {
   const [newName, setNewName] = useState('name')
   const [newNumber, setNewNumber] = useState('123-456-7890')
   const [filter, setFilter] = useState('')
+  const [message, setMessage] = useState('')
 
   // misc utility
   const clear = () => {
@@ -29,6 +31,10 @@ const App = () => {
     !person &&
       create({ name: newName, number: newNumber }).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson))
+        setMessage(`${returnedPerson.name} added successfully`)
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
         return clear()
       })
 
@@ -42,6 +48,10 @@ const App = () => {
               p.id !== returnedPerson.id ? p : returnedPerson
             )
           )
+          setMessage(
+            `${returnedPerson.name} number updated to ${returnedPerson.number}`
+          )
+          setTimeout(() => setMessage(null), 5000)
           return clear()
         }
       )
@@ -69,6 +79,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      {message && <Notification message={message} type='success' />}
       <Filter filter={filter} onChange={handleFilter} />
       <Form
         newName={newName}
